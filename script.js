@@ -80,20 +80,66 @@ function playRound(playerSelection, computerSelection) {
     return compareChoices(playerSelection, computerSelectionTranslated);
 }
 
-/* Plays n-number of rounds, and calculates score. */
-function game(numberOfRounds) {
-    let playerPoints = 0;
-    let computerPoints = 0;
-    for (let i = 0; i < numberOfRounds; i++) {
-        let result = playRound(getUserInput(), computerPlay());
-        console.log(result);
-        if (result.includes("win")) {
-            playerPoints += 1;
-        } else if (result.includes("lose")) {
-            computerPoints += 1;
+// /* Plays n-number of rounds, and calculates score. */
+// function game(numberOfRounds) {
+//     let playerPoints = 0;
+//     let computerPoints = 0;
+//     for (let i = 0; i < numberOfRounds; i++) {
+//         let result = playRound(getUserInput(), computerPlay());
+//         console.log(result);
+//         if (result.includes("win")) {
+//             playerPoints += 1;
+//         } else if (result.includes("lose")) {
+//             computerPoints += 1;
+//         }
+//     }
+//     return `The final score is:\nPlayer: ${playerPoints}\nComputer: ${computerPoints}`;
+// }
+
+function getPlayerSelectionChoice(e) {
+    let playerChoice = e.target.id;
+    let computerChoice = computerPlay();
+    const playerScoreDiv = document.querySelector('#player_score_num');
+    const computerScoreDiv = document.querySelector('#computer_score_num');
+
+    let result = playRound(playerChoice, computerChoice);
+
+    if (result.includes("win")) {
+        let newPlayerScore = Number(playerScoreDiv.textContent) + 1;
+        if(newPlayerScore <= 5 && Number(computerScoreDiv.textContent) !== 5){
+            playerScoreDiv.textContent = newPlayerScore;
+        }
+    } else if (result.includes("lose")) {
+        let newComputerScore = Number(computerScoreDiv.textContent) + 1;
+        if(newComputerScore <= 5 && Number(playerScoreDiv.textContent) !== 5){
+            computerScoreDiv.textContent = newComputerScore;
         }
     }
-    return `The final score is:\nPlayer: ${playerPoints}\nComputer: ${computerPoints}`;
+
+    if(playerScoreDiv.textContent >= 5 || computerScoreDiv.textContent >= 5) {
+        const winnerDiv = document.querySelector('.winner_container');
+        if(playerScoreDiv.textContent >= 5) {
+            winnerDiv.textContent = "Congratulations, you won!";
+            return;
+        }
+        winnerDiv.textContent = "I'm sorry, you lost, better luck next time.";
+        return;
+    }
+
+    const resultDiv = document.querySelector('#result');
+    resultDivTextContent = resultDiv.textContent;
+    // If result has history of more than 5 games it removes 1st line
+    if (resultDivTextContent.split(/\r\n|\r|\n/).length >= 5) {
+        let lines = resultDivTextContent.split('\n');
+        lines.splice(0, 1);
+        console.log('here');
+        resultDivTextContent = lines.join('\n');
+    }
+    resultDivTextContent += "\n" + result;
+    resultDiv.textContent = resultDivTextContent;
 }
 
-console.log(game(5));
+const buttons = document.querySelectorAll('.button_container button');
+buttons.forEach((button) => {
+    button.addEventListener('click', getPlayerSelectionChoice);
+});

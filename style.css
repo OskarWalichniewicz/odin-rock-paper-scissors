@@ -1,0 +1,52 @@
+button {
+  width: 150px;
+  height: 100px;
+  border-radius: 10px;
+  border: solid;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.button_container {
+  display: flex;
+  justify-content: space-around;
+  padding: 80px;
+}
+
+.button_container #rock {
+  background-color: #c4c4c4;
+  color: #6b6b6b;
+  border: solid #6b6b6b;
+}
+
+.button_container #paper {
+  background-color: #769878;
+  color: #435744;
+  border: solid #435744;
+}
+
+.button_container #scissors {
+  background-color: #cbc5a3;
+  color: #85816b;
+  border: solid #85816b;
+}
+
+.result_container {
+  display: flex;
+  justify-content: space-between;
+  padding: 80px;
+}
+
+#result {
+  padding: 80px;
+  font-size: 18px;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.winner_container {
+  font-size: 60px;
+  text-align: center;
+  padding: 0px 80px;
+}
