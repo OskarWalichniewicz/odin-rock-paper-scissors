@@ -33,7 +33,7 @@ function getUserInput() {
 function compareChoices(playerSelection, computerSelection) {
     // If both players chose the same answer, it's a tie - no winner
     if(playerSelection === computerSelection) {
-        return "It's a tie! You both chose the same answer!";
+        return `It's a tie! You both chose ${playerSelection}!`;
     }
 
     const choices = [playerSelection, computerSelection];
@@ -101,9 +101,27 @@ function getPlayerSelectionChoice(e) {
     let computerChoice = computerPlay();
     const playerScoreDiv = document.querySelector('#player_score_num');
     const computerScoreDiv = document.querySelector('#computer_score_num');
+    const resultDiv = document.querySelector('#result');
+
+    if(playerScoreDiv.textContent >= 5 || computerScoreDiv.textContent >= 5) {
+        return 0;
+    }
 
     let result = playRound(playerChoice, computerChoice);
 
+    resultDivTextContent = resultDiv.textContent;
+    
+    // If result has history of more than 5 games it removes 1st line
+    if (resultDivTextContent.split(/\r\n|\r|\n/).length >= 5) {
+        let lines = resultDivTextContent.split('\n');
+        lines.splice(0, 1);
+        console.log('here');
+        resultDivTextContent = lines.join('\n');
+    }
+    resultDivTextContent += "\n" + result;
+    resultDiv.textContent = resultDivTextContent;
+
+    // If won -> add point to player, if lost -> add point to computer
     if (result.includes("win")) {
         let newPlayerScore = Number(playerScoreDiv.textContent) + 1;
         if(newPlayerScore <= 5 && Number(computerScoreDiv.textContent) !== 5){
@@ -116,6 +134,7 @@ function getPlayerSelectionChoice(e) {
         }
     }
 
+    // If either player won
     if(playerScoreDiv.textContent >= 5 || computerScoreDiv.textContent >= 5) {
         const winnerDiv = document.querySelector('.winner_container');
         if(playerScoreDiv.textContent >= 5) {
@@ -125,18 +144,6 @@ function getPlayerSelectionChoice(e) {
         winnerDiv.textContent = "I'm sorry, you lost, better luck next time.";
         return;
     }
-
-    const resultDiv = document.querySelector('#result');
-    resultDivTextContent = resultDiv.textContent;
-    // If result has history of more than 5 games it removes 1st line
-    if (resultDivTextContent.split(/\r\n|\r|\n/).length >= 5) {
-        let lines = resultDivTextContent.split('\n');
-        lines.splice(0, 1);
-        console.log('here');
-        resultDivTextContent = lines.join('\n');
-    }
-    resultDivTextContent += "\n" + result;
-    resultDiv.textContent = resultDivTextContent;
 }
 
 const buttons = document.querySelectorAll('.button_container button');
